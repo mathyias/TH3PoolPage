@@ -27,7 +27,7 @@
     <h1>Miner Stats</h1>
     <h2>Workers, Shares, Pending, Payouts</h2>
     <p>
-      Paste your TH3 wallet address to view your pool-side mining stats.
+      Paste your TH3 wallet address once. The panel will remember it and refresh automatically.
     </p>
   </section>
 
@@ -37,7 +37,7 @@
 
     <div style="margin-top:14px;">
       <input id="minerAddress" placeholder="Paste TH3 address, e.g. T..." autocomplete="off">
-      <button class="search-btn" onclick="loadMiner()">Load Miner Stats</button>
+      <button class="search-btn" onclick="loadMiner(false)">Load Miner Stats</button>
       <div class="error" id="minerError"></div>
     </div>
   </section>
@@ -115,45 +115,101 @@
 
 <script>
 const MINER_API = 'https://pool.th3chain.cloud/api/miner';
+const STORAGE_KEY = 'th3_miner_address';
+const REFRESH_MS = 8000;
 
-function th3(value){
+let refreshTimer = null;
+let currentAddress = localStorage.getItem(STORAGE_KEY) || '';
+
+const input = document.getElementById('minerAddress');
+const errorBox = document.getElementById('minerError');
+const panel = document.getElementById('minerPanel');
+
+if (currentAddress) {
+  input.value = currentAddress;
+  loadMiner(false);
+}
+
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    loadMiner(false);
+  }
+});
+
+function startAutoRefresh() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+  }
+
+  refreshTimer = setInterval(() => {
+    if (currentAddress) {
+      loadMiner(true);
+    }
+  }, REFRESH_MS);
+}
+
+function th3(value) {
   return `${Number(value || 0).toFixed(8)} TH3`;
 }
 
-function fmtDate(value){
-  if(!value) return '-';
+function percent(value) {
+  return `${Number(value || 0).toFixed(2)}%`;
+}
+
+function fmtDate(value) {
+  if (!value) return '-';
   return new Date(value).toLocaleString();
 }
 
-function short(value){
-  if(!value) return '-';
-  if(value.length <= 24) return value;
+function short(value) {
+  if (!value) return '-';
+  if (value.length <= 24) return value;
   return `${value.slice(0, 12)}...${value.slice(-8)}`;
 }
 
-function statusBadge(status){
-  if(status === 'mining') return '<span class="badge">Mining now</span>';
-  if(status === 'recently_active') return '<span class="badge badge-warn">Recently active</span>';
+function statusBadge(status) {
+  if (status === 'mining') return '<span class="badge">Mining now</span>';
+  if (status === 'recently_active') return '<span class="badge badge-warn">Recently active</span>';
   return '<span class="badge badge-red">Offline</span>';
 }
 
-async function loadMiner(){
-  const address = document.getElementById('minerAddress').value.trim();
-  const error = document.getElementById('minerError');
-  const panel = document.getElementById('minerPanel');
+function normalizeWorkers(workers) {
+  if (!workers) return [];
 
-  error.textContent = '';
-  panel.style.display = 'none';
+  if (Array.isArray(workers)) {
+    return workers;
+  }
 
-  if(!address || !address.startsWith('T')){
-    error.textContent = 'Enter a valid TH3 address.';
+  return Object.entries(workers).map(([name, data]) => ({
+    name,
+    ...data
+  }));
+}
+
+async function loadMiner(silent = false) {
+  const typedAddress = input.value.trim();
+  const address = typedAddress || currentAddress;
+
+  if (!address || !address.startsWith('T')) {
+    if (!silent) {
+      errorBox.textContent = 'Enter a valid TH3 address.';
+      panel.style.display = 'none';
+    }
     return;
   }
 
-  try{
-    const res = await fetch(`${MINER_API}/${encodeURIComponent(address)}`);
+  currentAddress = address;
+  localStorage.setItem(STORAGE_KEY, currentAddress);
+  input.value = currentAddress;
 
-    if(!res.ok){
+  if (!silent) {
+    errorBox.textContent = 'Loading miner stats...';
+  }
+
+  try {
+    const res = await fetch(`${MINER_API}/${encodeURIComponent(currentAddress)}?t=${Date.now()}`);
+
+    if (!res.ok) {
       throw new Error('Miner not found yet. Start mining and submit shares first.');
     }
 
@@ -165,36 +221,45 @@ async function loadMiner(){
     document.getElementById('minerBlocks').textContent = data.validBlocks ?? 0;
     document.getElementById('minerLastSeen').textContent = fmtDate(data.lastSeen);
     document.getElementById('pendingReward').textContent = th3(data.pendingReward);
-    document.getElementById('pendingSharePercent').textContent = `${data.pendingSharePercent ?? 0}%`;
+    document.getElementById('pendingSharePercent').textContent = percent(data.pendingSharePercent);
     document.getElementById('minPayout').textContent = th3(data.minPayout);
     document.getElementById('lastPayoutTxid').textContent = short(data.lastPayoutTxid);
     document.getElementById('lastPayoutTime').textContent = fmtDate(data.lastPayoutTime);
     document.getElementById('paidUntilHeight').textContent = data.paidUntilHeight ?? '-';
     document.getElementById('maxPayableHeight').textContent = data.maxPayableHeight ?? '-';
 
-    const workers = Array.isArray(data.workers) ? data.workers : [];
+    const workers = normalizeWorkers(data.workers);
     document.getElementById('workersList').innerHTML = workers.length
       ? workers.map((worker) => `
         <div class="row">
-          <strong>${worker.name}</strong>
-          <span>${statusBadge(worker.status)}<br>${worker.validShares || 0} accepted / ${worker.invalidShares || 0} rejected<br>${fmtDate(worker.lastSeen)}</span>
+          <strong>${worker.name || 'default'}</strong>
+          <span>
+            ${statusBadge(worker.status || data.status)}
+            <br>${worker.validShares || 0} accepted / ${worker.invalidShares || 0} rejected
+            <br>${fmtDate(worker.lastSeen || data.lastSeen)}
+          </span>
         </div>
       `).join('')
       : '<div class="step">No workers yet.</div>';
 
     const payouts = Array.isArray(data.payouts) ? data.payouts : [];
     document.getElementById('payoutList').innerHTML = payouts.length
-      ? payouts.map((payout) => `
-        <div class="row">
+      ? payouts.slice(0, 10).map((payout) => `
+        <a class="row" href="https://explorer.th3chain.cloud/tx/${payout.txid}" target="_blank" rel="noreferrer">
           <strong>${th3(payout.amount)}</strong>
           <span>${short(payout.txid)}<br>${fmtDate(payout.time)}</span>
-        </div>
+        </a>
       `).join('')
       : '<div class="step">No payout history yet.</div>';
 
+    errorBox.textContent = '';
     panel.style.display = 'block';
-  }catch(e){
-    error.textContent = e.message || 'Miner stats unavailable.';
+    startAutoRefresh();
+  } catch (e) {
+    if (!silent) {
+      errorBox.textContent = e.message || 'Miner stats unavailable.';
+      panel.style.display = 'none';
+    }
   }
 }
 </script>
