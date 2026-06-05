@@ -13,6 +13,7 @@
   --neon:#5df6ff;
   --green:#4ade80;
   --red:#fb7185;
+  --yellow:#fde047;
   --bg:#020617;
   --panel:rgba(255,255,255,.08);
   --line:rgba(255,255,255,.12);
@@ -35,9 +36,9 @@ a{color:inherit}
 
 .wrapper{
   width:100%;
-  max-width:1120px;
+  max-width:1140px;
   margin:auto;
-  padding:26px;
+  padding:24px;
 }
 
 nav{
@@ -77,6 +78,7 @@ nav{
   font-weight:700;
   border:1px solid rgba(255,255,255,.13);
   background:rgba(255,255,255,.06);
+  color:#fff;
 }
 
 .btn-main{
@@ -87,7 +89,7 @@ nav{
 }
 
 .hero{
-  padding:68px 0 34px;
+  padding:54px 0 28px;
   text-align:center;
 }
 
@@ -106,12 +108,12 @@ h1{
 
 h2{
   color:var(--neon);
-  font-size:clamp(1.8rem,4vw,3rem);
+  font-size:clamp(1.7rem,4vw,3rem);
   margin-top:14px;
 }
 
 .hero p{
-  max-width:780px;
+  max-width:800px;
   margin:22px auto 0;
   color:var(--muted);
   line-height:1.7;
@@ -120,7 +122,7 @@ h2{
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:16px;
   margin-top:24px;
 }
@@ -177,6 +179,12 @@ h2{
   border:1px solid rgba(34,197,94,.24);
 }
 
+.badge-warn{
+  color:var(--yellow);
+  background:rgba(250,204,21,.12);
+  border-color:rgba(250,204,21,.24);
+}
+
 .codebox{
   margin-top:14px;
   padding:16px;
@@ -191,7 +199,8 @@ h2{
   white-space:pre-wrap;
 }
 
-.copy-btn{
+.copy-btn,
+.search-btn{
   width:100%;
   margin-top:12px;
   padding:13px;
@@ -204,18 +213,69 @@ h2{
   cursor:pointer;
 }
 
+.search-btn{
+  background:linear-gradient(180deg,#7df8ff,#27e8ff);
+  color:#04151a;
+}
+
+input{
+  width:100%;
+  padding:15px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  text-align:center;
+  font-family:inherit;
+  outline:none;
+}
+
+input:focus{
+  border-color:rgba(93,246,255,.45);
+  box-shadow:0 0 0 3px rgba(93,246,255,.10);
+}
+
 .steps{
   display:grid;
   gap:10px;
   margin-top:14px;
 }
 
-.step{
+.step,.worker-row,.share-row{
   padding:13px 15px;
   border-radius:16px;
   background:rgba(255,255,255,.045);
   border:1px solid rgba(255,255,255,.08);
   color:#dbeafe;
+  overflow-wrap:anywhere;
+}
+
+.worker-row,
+.share-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.worker-row span,
+.share-row span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.show{
+  display:block;
+}
+
+.error{
+  color:var(--red);
+  margin-top:10px;
+  font-size:13px;
 }
 
 footer{
@@ -247,7 +307,12 @@ footer{
   }
 
   .hero{
-    padding-top:38px;
+    padding-top:34px;
+  }
+
+  .worker-row,
+  .share-row{
+    flex-direction:column;
   }
 }
 </style>
@@ -262,7 +327,7 @@ footer{
       <a class="btn" href="https://wallet.th3chain.cloud">Wallet</a>
       <a class="btn" href="https://explorer.th3chain.cloud">Explorer</a>
       <a class="btn" href="https://th3chain.cloud">Main</a>
-      <a class="btn btn-main" href="#start">Start Mining</a>
+      <a class="btn btn-main" href="#miner-panel">Miner Panel</a>
     </div>
   </nav>
 
@@ -272,21 +337,33 @@ footer{
     <h2>KAWPOW Mining</h2>
     <p>
       Mine TH3 using the public TH3 mining pool. Use your TH3 Wallet address as username,
-      connect with Rigel miner, and track mined rewards through TH3 Wallet and Explorer.
+      connect with Rigel miner, and track shares, workers and rewards from this page.
     </p>
   </section>
 
   <section class="grid">
     <div class="card">
       <div class="stat-label">Pool Status</div>
-      <div class="stat-value"><span class="badge">Online</span></div>
+      <div class="stat-value"><span class="badge" id="poolStatus">Loading</span></div>
     </div>
 
     <div class="card">
       <div class="stat-label">Algorithm</div>
-      <div class="stat-value">KAWPOW</div>
+      <div class="stat-value" id="algorithmValue">KAWPOW</div>
     </div>
 
+    <div class="card">
+      <div class="stat-label">Accepted Shares</div>
+      <div class="stat-value" id="sharesValue">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Active Miners</div>
+      <div class="stat-value" id="minersValue">-</div>
+    </div>
+  </section>
+
+  <section class="grid">
     <div class="card">
       <div class="stat-label">Network Height</div>
       <div class="stat-value" id="heightValue">-</div>
@@ -296,9 +373,19 @@ footer{
       <div class="stat-label">Network Hashrate</div>
       <div class="stat-value" id="hashrateValue">-</div>
     </div>
+
+    <div class="card">
+      <div class="stat-label">Blocks Found</div>
+      <div class="stat-value" id="blocksValue">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Rejected Shares</div>
+      <div class="stat-value" id="invalidSharesValue">-</div>
+    </div>
   </section>
 
-  <section class="stack" id="start">
+  <section class="stack">
     <div class="card">
       <h3>Stratum</h3>
       <p>Use this pool endpoint in your miner.</p>
@@ -317,6 +404,53 @@ pause</div>
     </div>
   </section>
 
+  <section class="card" id="miner-panel" style="margin-top:16px;">
+    <h3>Miner Panel</h3>
+    <p class="muted">Paste your TH3 wallet address to see pool-side shares and workers.</p>
+
+    <div style="margin-top:14px;">
+      <input id="minerAddress" placeholder="Paste TH3 address, e.g. T..." autocomplete="off">
+      <button class="search-btn" onclick="loadMiner()">Load Miner Stats</button>
+      <div class="error" id="minerError"></div>
+    </div>
+
+    <div class="panel" id="minerPanel">
+      <section class="grid">
+        <div class="card">
+          <div class="stat-label">Accepted Shares</div>
+          <div class="stat-value" id="minerValidShares">-</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Rejected Shares</div>
+          <div class="stat-value" id="minerInvalidShares">-</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Blocks Found</div>
+          <div class="stat-value" id="minerBlocks">-</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Last Seen</div>
+          <div class="stat-value" id="minerLastSeen">-</div>
+        </div>
+      </section>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Workers</h3>
+          <div class="steps" id="workersList"></div>
+        </div>
+
+        <div class="card">
+          <h3>Recent Pool Shares</h3>
+          <div class="steps" id="recentSharesList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="stack">
     <div class="card">
       <h3>How To Mine</h3>
@@ -325,7 +459,7 @@ pause</div>
         <div class="step">1. Open TH3 Wallet and copy your wallet address.</div>
         <div class="step">2. Download or open Rigel miner on your mining machine.</div>
         <div class="step">3. Paste your TH3 address after <strong>-u</strong>.</div>
-        <div class="step">4. Start the miner and watch rewards in Wallet / Explorer.</div>
+        <div class="step">4. Start miner and track shares in Miner Panel.</div>
       </div>
     </div>
 
@@ -344,17 +478,6 @@ pause</div>
     </div>
   </section>
 
-  <section class="card" style="margin-top:16px;">
-    <h3>Live Chain Snapshot</h3>
-    <p class="muted">Pulled from the TH3 public API.</p>
-
-    <div class="steps">
-      <div class="step">Best Block: <span id="bestblockValue">-</span></div>
-      <div class="step">Difficulty: <span id="difficultyValue">-</span></div>
-      <div class="step">Peers: <span id="peersValue">-</span></div>
-    </div>
-  </section>
-
   <footer>
     TH3CHAIN | Proof-of-Work | KAWPOW | Self-Custody Wallet
   </footer>
@@ -362,6 +485,20 @@ pause</div>
 
 <script>
 const NETWORK_API = 'https://api.th3chain.cloud/api/network';
+const POOL_API = 'https://pool.th3chain.cloud/api/pool/stats';
+const MINER_API = 'https://pool.th3chain.cloud/api/miner';
+
+let lastPoolStats = null;
+
+function fmtDate(value){
+  if(!value) return '-';
+  return new Date(value).toLocaleString();
+}
+
+function copyText(id){
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent.trim());
+}
 
 async function loadNetwork(){
   try{
@@ -370,21 +507,92 @@ async function loadNetwork(){
 
     document.getElementById('heightValue').textContent = data.height ?? '-';
     document.getElementById('hashrateValue').textContent = Number(data.hashrate || 0).toExponential(2);
-    document.getElementById('bestblockValue').textContent = data.bestblock || '-';
-    document.getElementById('difficultyValue').textContent = data.difficulty ?? '-';
-    document.getElementById('peersValue').textContent = data.peers ?? '-';
   }catch(e){
     document.getElementById('heightValue').textContent = 'API offline';
   }
 }
 
-function copyText(id){
-  const el = document.getElementById(id);
-  navigator.clipboard.writeText(el.textContent.trim());
+async function loadPool(){
+  try{
+    const res = await fetch(POOL_API);
+    const data = await res.json();
+    lastPoolStats = data;
+
+    document.getElementById('poolStatus').textContent = data.online ? 'Online' : 'Offline';
+    document.getElementById('algorithmValue').textContent = (data.algorithm || 'kawpow').toUpperCase();
+    document.getElementById('sharesValue').textContent = data.validShares ?? 0;
+    document.getElementById('invalidSharesValue').textContent = data.invalidShares ?? 0;
+    document.getElementById('blocksValue').textContent = data.validBlocks ?? 0;
+    document.getElementById('minersValue').textContent = data.minerCount ?? 0;
+
+    renderRecentShares(data.recentShares || []);
+  }catch(e){
+    document.getElementById('poolStatus').textContent = 'Offline';
+    document.getElementById('poolStatus').className = 'badge badge-warn';
+  }
+}
+
+async function loadMiner(){
+  const address = document.getElementById('minerAddress').value.trim();
+  const error = document.getElementById('minerError');
+  const panel = document.getElementById('minerPanel');
+
+  error.textContent = '';
+  panel.classList.remove('show');
+
+  if(!address || !address.startsWith('T')){
+    error.textContent = 'Enter a valid TH3 address.';
+    return;
+  }
+
+  try{
+    const res = await fetch(`${MINER_API}/${encodeURIComponent(address)}`);
+
+    if(!res.ok){
+      throw new Error('Miner not found yet. Start mining and submit shares first.');
+    }
+
+    const data = await res.json();
+
+    document.getElementById('minerValidShares').textContent = data.validShares ?? 0;
+    document.getElementById('minerInvalidShares').textContent = data.invalidShares ?? 0;
+    document.getElementById('minerBlocks').textContent = data.validBlocks ?? 0;
+    document.getElementById('minerLastSeen').textContent = fmtDate(data.lastSeen);
+
+    const workers = Array.isArray(data.workers) ? data.workers : [];
+    document.getElementById('workersList').innerHTML = workers.length
+      ? workers.map((worker) => `
+        <div class="worker-row">
+          <strong>${worker.name}</strong>
+          <span>${worker.validShares || 0} accepted / ${worker.invalidShares || 0} rejected<br>${fmtDate(worker.lastSeen)}</span>
+        </div>
+      `).join('')
+      : '<div class="step">No workers yet.</div>';
+
+    panel.classList.add('show');
+  }catch(e){
+    error.textContent = e.message || 'Miner stats unavailable.';
+  }
+}
+
+function renderRecentShares(shares){
+  const list = document.getElementById('recentSharesList');
+  if(!list) return;
+
+  list.innerHTML = shares.length
+    ? shares.slice(0, 10).map((share) => `
+      <div class="share-row">
+        <strong>${share.address || 'unknown'}</strong>
+        <span>${share.validBlock ? 'Block' : 'Share'} • ${fmtDate(share.time)}</span>
+      </div>
+    `).join('')
+    : '<div class="step">No shares yet.</div>';
 }
 
 loadNetwork();
+loadPool();
 setInterval(loadNetwork, 15000);
+setInterval(loadPool, 10000);
 </script>
 </body>
 </html>
