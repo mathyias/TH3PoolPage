@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020617">
+<title>TH3 Mining Pool</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --neon:#5df6ff;
+  --green:#4ade80;
+  --red:#fb7185;
+  --bg:#020617;
+  --panel:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.12);
+  --muted:rgba(255,255,255,.58);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left,rgba(93,246,255,.15),transparent 40%),
+    radial-gradient(circle at bottom right,rgba(255,255,255,.08),transparent 40%),
+    linear-gradient(180deg,#0f172a 0%,#020617 100%);
+  color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+}
+
+a{color:inherit}
+
+.wrapper{
+  width:100%;
+  max-width:1120px;
+  margin:auto;
+  padding:26px;
+}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:28px;
+}
+
+.logo{
+  width:58px;
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  color:#04151a;
+  background:linear-gradient(180deg,#7df8ff,#27e8ff);
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(39,232,255,.22);
+}
+
+.nav-links{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 18px;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.06);
+}
+
+.btn-main{
+  background:linear-gradient(180deg,#7df8ff,#27e8ff);
+  color:#04151a;
+  border:0;
+  box-shadow:0 12px 30px rgba(39,232,255,.22);
+}
+
+.hero{
+  padding:68px 0 34px;
+  text-align:center;
+}
+
+.kicker{
+  color:var(--neon);
+  letter-spacing:.32em;
+  font-size:12px;
+  margin-bottom:16px;
+}
+
+h1{
+  font-size:clamp(3.2rem,8vw,6.5rem);
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+
+h2{
+  color:var(--neon);
+  font-size:clamp(1.8rem,4vw,3rem);
+  margin-top:14px;
+}
+
+.hero p{
+  max-width:780px;
+  margin:22px auto 0;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:1.05rem;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px;
+  margin-top:24px;
+}
+
+.stack{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:16px;
+}
+
+.card{
+  background:var(--panel);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+.card h3{
+  margin-bottom:10px;
+}
+
+.card p,.muted{
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.stat-value{
+  margin-top:8px;
+  font-size:24px;
+  font-weight:900;
+  color:var(--neon);
+  word-break:break-all;
+}
+
+.badge{
+  display:inline-flex;
+  padding:7px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--green);
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.24);
+}
+
+.codebox{
+  margin-top:14px;
+  padding:16px;
+  border-radius:18px;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.10);
+  color:var(--neon);
+  font-family:monospace;
+  font-size:13px;
+  line-height:1.6;
+  word-break:break-all;
+  white-space:pre-wrap;
+}
+
+.copy-btn{
+  width:100%;
+  margin-top:12px;
+  padding:13px;
+  border:0;
+  border-radius:16px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-family:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.steps{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.step{
+  padding:13px 15px;
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  color:#dbeafe;
+}
+
+footer{
+  text-align:center;
+  color:#64748b;
+  padding:44px 0 20px;
+}
+
+@media(max-width:780px){
+  nav{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .nav-links{
+    flex-direction:column;
+  }
+
+  .btn{
+    width:100%;
+  }
+
+  .stack{
+    grid-template-columns:1fr;
+  }
+
+  .wrapper{
+    padding:18px;
+  }
+
+  .hero{
+    padding-top:38px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+  <nav>
+    <div class="logo">TH3</div>
+
+    <div class="nav-links">
+      <a class="btn" href="https://wallet.th3chain.cloud">Wallet</a>
+      <a class="btn" href="https://explorer.th3chain.cloud">Explorer</a>
+      <a class="btn" href="https://th3chain.cloud">Main</a>
+      <a class="btn btn-main" href="#start">Start Mining</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">TH3 MINING POOL</div>
+    <h1>TH3 POOL</h1>
+    <h2>KAWPOW Mining</h2>
+    <p>
+      Mine TH3 using the public TH3 mining pool. Use your TH3 Wallet address as username,
+      connect with Rigel miner, and track mined rewards through TH3 Wallet and Explorer.
+    </p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="stat-label">Pool Status</div>
+      <div class="stat-value"><span class="badge">Online</span></div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Algorithm</div>
+      <div class="stat-value">KAWPOW</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Network Height</div>
+      <div class="stat-value" id="heightValue">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Network Hashrate</div>
+      <div class="stat-value" id="hashrateValue">-</div>
+    </div>
+  </section>
+
+  <section class="stack" id="start">
+    <div class="card">
+      <h3>Stratum</h3>
+      <p>Use this pool endpoint in your miner.</p>
+
+      <div class="codebox" id="stratumText">stratum+tcp://pool.th3chain.cloud:3333</div>
+      <button class="copy-btn" onclick="copyText('stratumText')">Copy Stratum URL</button>
+    </div>
+
+    <div class="card">
+      <h3>Rigel Miner</h3>
+      <p>Replace <strong>YOUR_TH3_ADDRESS</strong> with your TH3 Wallet address.</p>
+
+      <div class="codebox" id="rigelText">rigel.exe -a kawpow -o stratum+tcp://pool.th3chain.cloud:3333 -u YOUR_TH3_ADDRESS -p x
+pause</div>
+      <button class="copy-btn" onclick="copyText('rigelText')">Copy Rigel Command</button>
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="card">
+      <h3>How To Mine</h3>
+
+      <div class="steps">
+        <div class="step">1. Open TH3 Wallet and copy your wallet address.</div>
+        <div class="step">2. Download or open Rigel miner on your mining machine.</div>
+        <div class="step">3. Paste your TH3 address after <strong>-u</strong>.</div>
+        <div class="step">4. Start the miner and watch rewards in Wallet / Explorer.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Mining Rewards</h3>
+      <p>
+        Fresh mining rewards are coinbase outputs. They appear in wallet history as mining rewards,
+        but stay immature until enough confirmations pass. Mature rewards become spendable UTXO.
+      </p>
+
+      <div class="steps">
+        <div class="step">Coinbase reward appears in history</div>
+        <div class="step">Immature rewards wait for confirmations</div>
+        <div class="step">Mature rewards can be sent from TH3 Wallet</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px;">
+    <h3>Live Chain Snapshot</h3>
+    <p class="muted">Pulled from the TH3 public API.</p>
+
+    <div class="steps">
+      <div class="step">Best Block: <span id="bestblockValue">-</span></div>
+      <div class="step">Difficulty: <span id="difficultyValue">-</span></div>
+      <div class="step">Peers: <span id="peersValue">-</span></div>
+    </div>
+  </section>
+
+  <footer>
+    TH3CHAIN | Proof-of-Work | KAWPOW | Self-Custody Wallet
+  </footer>
+</div>
+
+<script>
+const NETWORK_API = 'https://api.th3chain.cloud/api/network';
+
+async function loadNetwork(){
+  try{
+    const res = await fetch(NETWORK_API);
+    const data = await res.json();
+
+    document.getElementById('heightValue').textContent = data.height ?? '-';
+    document.getElementById('hashrateValue').textContent = Number(data.hashrate || 0).toExponential(2);
+    document.getElementById('bestblockValue').textContent = data.bestblock || '-';
+    document.getElementById('difficultyValue').textContent = data.difficulty ?? '-';
+    document.getElementById('peersValue').textContent = data.peers ?? '-';
+  }catch(e){
+    document.getElementById('heightValue').textContent = 'API offline';
+  }
+}
+
+function copyText(id){
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent.trim());
+}
+
+loadNetwork();
+setInterval(loadNetwork, 15000);
+</script>
+</body>
+</html>
