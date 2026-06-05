@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020617">
+<title>Pool Stats | TH3 Pool</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div class="wrapper">
+  <nav>
+    <a class="logo" href="/">TH3</a>
+    <div class="nav-links">
+      <a class="btn" href="/">Overview</a>
+      <a class="btn" href="/start.html">Start Mining</a>
+      <a class="btn" href="/miner.html">Miner Panel</a>
+      <a class="btn btn-main" href="/stats.html">Pool Stats</a>
+      <a class="btn" href="https://wallet.th3chain.cloud">Wallet</a>
+      <a class="btn" href="https://explorer.th3chain.cloud">Explorer</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">POOL STATS</div>
+    <h1>Pool Status</h1>
+    <h2>Shares, Rewards, Payouts</h2>
+    <p>
+      Live pool-side statistics from TH3 mining infrastructure.
+    </p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="stat-label">Status</div>
+      <div class="stat-value"><span class="badge" id="poolStatus">Loading</span></div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Accepted Shares</div>
+      <div class="stat-value" id="validShares">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Rejected Shares</div>
+      <div class="stat-value" id="invalidShares">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Miners</div>
+      <div class="stat-value" id="minerCount">-</div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="stat-label">Blocks Found</div>
+      <div class="stat-value" id="validBlocks">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Pending Gross Reward</div>
+      <div class="stat-value" id="pendingGrossReward">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Pending Pool Fee</div>
+      <div class="stat-value" id="pendingPoolFee">-</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Pending Miner Reward</div>
+      <div class="stat-value" id="pendingMinerReward">-</div>
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="card">
+      <h3>Pool Rules</h3>
+      <div class="steps">
+        <div class="step">Algorithm: <span id="algorithm">-</span></div>
+        <div class="step">Pool fee: <span id="poolFee">-</span></div>
+        <div class="step">Minimum payout: <span id="minPayout">-</span></div>
+        <div class="step">Reward per block: <span id="rewardPerBlock">-</span></div>
+        <div class="step">Confirmation buffer: <span id="confirmationBuffer">-</span> blocks</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Payout State</h3>
+      <div class="steps">
+        <div class="step">Current height: <span id="currentHeight">-</span></div>
+        <div class="step">Paid until height: <span id="paidUntilHeight">-</span></div>
+        <div class="step">Max payable height: <span id="maxPayableHeight">-</span></div>
+        <div class="step">Last payout: <span id="lastPayoutTime">-</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="card">
+      <h3>Recent Shares</h3>
+      <div class="steps" id="recentShares"></div>
+    </div>
+
+    <div class="card">
+      <h3>Recent Payouts</h3>
+      <div class="steps" id="recentPayouts"></div>
+    </div>
+  </section>
+
+  <footer>TH3CHAIN | Pool Stats</footer>
+</div>
+
+<script>
+const POOL_API = 'https://pool.th3chain.cloud/api/pool/stats';
+
+function th3(value){
+  return `${Number(value || 0).toFixed(8)} TH3`;
+}
+
+function fmtDate(value){
+  if(!value) return '-';
+  return new Date(value).toLocaleString();
+}
+
+function short(value){
+  if(!value) return '-';
+  if(value.length <= 24) return value;
+  return `${value.slice(0, 12)}...${value.slice(-8)}`;
+}
+
+async function loadStats(){
+  try{
+    const res = await fetch(POOL_API);
+    const data = await res.json();
+
+    document.getElementById('poolStatus').textContent = data.online ? 'Online' : 'Offline';
+    document.getElementById('validShares').textContent = data.validShares ?? 0;
+    document.getElementById('invalidShares').textContent = data.invalidShares ?? 0;
+    document.getElementById('minerCount').textContent = data.minerCount ?? 0;
+    document.getElementById('validBlocks').textContent = data.validBlocks ?? 0;
+
+    document.getElementById('pendingGrossReward').textContent = th3(data.pendingGrossReward);
+    document.getElementById('pendingPoolFee').textContent = th3(data.pendingPoolFee);
+    document.getElementById('pendingMinerReward').textContent = th3(data.pendingMinerReward);
+
+    document.getElementById('algorithm').textContent = (data.algorithm || 'kawpow').toUpperCase();
+    document.getElementById('poolFee').textContent = `${data.poolFeePercent ?? 0}%`;
+    document.getElementById('minPayout').textContent = th3(data.minPayout);
+    document.getElementById('rewardPerBlock').textContent = th3(data.rewardPerBlock);
+    document.getElementById('confirmationBuffer').textContent = data.confirmationBuffer ?? '-';
+
+    document.getElementById('currentHeight').textContent = data.currentHeight ?? '-';
+    document.getElementById('paidUntilHeight').textContent = data.paidUntilHeight ?? '-';
+    document.getElementById('maxPayableHeight').textContent = data.maxPayableHeight ?? '-';
+    document.getElementById('lastPayoutTime').textContent = fmtDate(data.lastPayoutTime);
+
+    const shares = Array.isArray(data.recentShares) ? data.recentShares : [];
+    document.getElementById('recentShares').innerHTML = shares.length
+      ? shares.slice(0, 20).map((share) => `
+        <div class="row">
+          <strong>${short(share.address || 'unknown')}</strong>
+          <span>${share.validShare ? 'Accepted' : 'Rejected'} ${share.validBlock ? '| Block' : '| Share'}<br>${fmtDate(share.time)}</span>
+        </div>
+      `).join('')
+      : '<div class="step">No shares yet.</div>';
+
+    const payouts = Array.isArray(data.recentPayouts) ? data.recentPayouts : [];
+    document.getElementById('recentPayouts').innerHTML = payouts.length
+      ? payouts.slice(0, 20).map((payout) => `
+        <div class="row">
+          <strong>${th3(payout.amount)}</strong>
+          <span>${short(payout.address)}<br>${short(payout.txid)}<br>${fmtDate(payout.time)}</span>
+        </div>
+      `).join('')
+      : '<div class="step">No payout history yet.</div>';
+  }catch(e){
+    document.getElementById('poolStatus').textContent = 'Offline';
+    document.getElementById('poolStatus').className = 'badge badge-red';
+  }
+}
+
+loadStats();
+setInterval(loadStats, 10000);
+</script>
+</body>
+</html>

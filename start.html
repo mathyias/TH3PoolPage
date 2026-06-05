@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020617">
+<title>Start Mining | TH3 Pool</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div class="wrapper">
+  <nav>
+    <a class="logo" href="/">TH3</a>
+    <div class="nav-links">
+      <a class="btn" href="/">Overview</a>
+      <a class="btn btn-main" href="/start.html">Start Mining</a>
+      <a class="btn" href="/miner.html">Miner Panel</a>
+      <a class="btn" href="/stats.html">Pool Stats</a>
+      <a class="btn" href="https://wallet.th3chain.cloud">Wallet</a>
+      <a class="btn" href="https://explorer.th3chain.cloud">Explorer</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">START MINING</div>
+    <h1>Mine TH3</h1>
+    <h2>Rigel + KAWPOW</h2>
+    <p>
+      Use your TH3 Wallet address as username. Rewards are tracked by accepted shares,
+      then automatically paid out when the minimum payout threshold is reached.
+    </p>
+  </section>
+
+  <section class="stack">
+    <div class="card">
+      <h3>Stratum URL</h3>
+      <p>Use this endpoint in your miner.</p>
+      <div class="codebox" id="stratumText">stratum+tcp://pool.th3chain.cloud:3333</div>
+      <button class="copy-btn" onclick="copyText('stratumText')">Copy Stratum URL</button>
+    </div>
+
+    <div class="card">
+      <h3>Rigel Command</h3>
+      <p>Replace <strong>YOUR_TH3_ADDRESS</strong> with your wallet address.</p>
+      <div class="codebox" id="rigelText">rigel.exe -a kawpow -o stratum+tcp://pool.th3chain.cloud:3333 -u YOUR_TH3_ADDRESS -p x
+pause</div>
+      <button class="copy-btn" onclick="copyText('rigelText')">Copy Rigel Command</button>
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="card">
+      <h3>Steps</h3>
+      <div class="steps">
+        <div class="step">1. Open TH3 Wallet and copy your TH3 address.</div>
+        <div class="step">2. Download or open Rigel miner.</div>
+        <div class="step">3. Paste your TH3 address after <strong>-u</strong>.</div>
+        <div class="step">4. Start the miner.</div>
+        <div class="step">5. Open Miner Panel and paste your address to track workers.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Pool Rules</h3>
+      <div class="steps">
+        <div class="step">Algorithm: KAWPOW</div>
+        <div class="step">Pool fee: <span id="poolFeeValue">-</span></div>
+        <div class="step">Minimum payout: <span id="minPayoutValue">-</span></div>
+        <div class="step">Confirmation buffer: <span id="confirmationBufferValue">-</span> blocks</div>
+        <div class="step">Reward per block: <span id="rewardPerBlockValue">-</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>TH3CHAIN | Mining Pool</footer>
+</div>
+
+<script>
+const POOL_API = 'https://pool.th3chain.cloud/api/pool/stats';
+
+function th3(value){
+  return `${Number(value || 0).toFixed(8)} TH3`;
+}
+
+function copyText(id){
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent.trim());
+}
+
+async function loadPool(){
+  try{
+    const res = await fetch(POOL_API);
+    const data = await res.json();
+
+    document.getElementById('poolFeeValue').textContent = `${data.poolFeePercent ?? 0}%`;
+    document.getElementById('minPayoutValue').textContent = th3(data.minPayout);
+    document.getElementById('confirmationBufferValue').textContent = data.confirmationBuffer ?? '-';
+    document.getElementById('rewardPerBlockValue').textContent = th3(data.rewardPerBlock);
+  }catch(e){}
+}
+
+loadPool();
+</script>
+</body>
+</html>
