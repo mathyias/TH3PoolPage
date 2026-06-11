@@ -446,3 +446,34 @@ nav .logo.logo-image img {
     height:38px;
   }
 }
+
+/* Final pool brand sizing to match other TH3 pages */
+.pool-brand{
+  gap:12px !important;
+  font-size:22px !important;
+}
+
+.pool-brand img{
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  max-width:58px !important;
+  min-height:58px !important;
+  max-height:58px !important;
+}
+
+@media(max-width:720px){
+  .pool-brand{
+    gap:10px !important;
+    font-size:19px !important;
+  }
+
+  .pool-brand img{
+    width:46px !important;
+    height:46px !important;
+    min-width:46px !important;
+    max-width:46px !important;
+    min-height:46px !important;
+    max-height:46px !important;
+  }
+}
