@@ -409,3 +409,40 @@ nav .logo.logo-image img {
     max-height: 38px !important;
   }
 }
+
+/* Pool brand logo + label */
+.pool-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:900;
+  font-size:20px;
+  line-height:1;
+  flex:0 0 auto;
+}
+
+.pool-brand img{
+  width:42px;
+  height:42px;
+  display:block;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 24px rgba(39,232,255,.22));
+}
+
+.pool-brand span{
+  color:#f8fafc;
+}
+
+@media(max-width:720px){
+  .pool-brand{
+    gap:8px;
+    font-size:18px;
+  }
+
+  .pool-brand img{
+    width:38px;
+    height:38px;
+  }
+}
