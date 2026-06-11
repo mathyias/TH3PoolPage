@@ -477,3 +477,63 @@ nav .logo.logo-image img {
     max-height:46px !important;
   }
 }
+
+.menu-toggle{
+  display:none;
+  min-height:42px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  font-weight:900;
+}
+
+@media(max-width:720px){
+  nav{
+    display:grid;
+    grid-template-columns:auto auto;
+    align-items:center;
+    gap:12px;
+  }
+
+  .menu-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    justify-self:end;
+  }
+
+  .nav-links{
+    grid-column:1 / -1;
+    width:100%;
+    display:none;
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .nav-links.open{
+    display:grid;
+  }
+
+  .nav-links .btn{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+/* Final visible mobile menu button */
+@media(max-width:720px){
+  .menu-toggle{
+    display:inline-flex !important;
+    align-items:center;
+    justify-content:center;
+    min-width:88px;
+    height:42px;
+    justify-self:end;
+    border:1px solid rgba(78,234,255,.32);
+    background:rgba(78,234,255,.12);
+    color:#f8fafc;
+    box-shadow:0 12px 28px rgba(0,0,0,.18);
+  }
+}
