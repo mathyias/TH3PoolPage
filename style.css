@@ -323,3 +323,43 @@ footer{
     text-align:left;
   }
 }
+/* TH3 brand logo in navigation */
+.logo-image{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  width:64px !important;
+  height:64px !important;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo-image img{
+  width:58px;
+  height:58px;
+  display:block;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 24px rgba(39,232,255,.22));
+}
+
+@media(max-width:720px){
+  nav{
+    gap:12px;
+  }
+
+  .logo-image{
+    width:52px !important;
+    height:52px !important;
+  }
+
+  .logo-image img{
+    width:46px;
+    height:46px;
+  }
+
+  .nav-links{
+    width:100%;
+  }
+}
