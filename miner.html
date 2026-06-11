@@ -36,7 +36,7 @@
     <p class="muted">Use the same TH3 address you put after <strong>-u</strong> in Rigel.</p>
 
     <div style="margin-top:14px;">
-      <input id="minerAddress" placeholder="Paste TH3 address, e.g. T..." autocomplete="off">
+      <input id="minerAddress" placeholder="Paste TH3 address, e.g. TH3..." autocomplete="off">
       <button class="search-btn" onclick="loadMiner(false)">Load Miner Stats</button>
       <div class="error" id="minerError"></div>
     </div>
@@ -190,7 +190,7 @@ async function loadMiner(silent = false) {
   const typedAddress = input.value.trim();
   const address = typedAddress || currentAddress;
 
-  if (!address || !address.startsWith('T')) {
+  if (!address || !address.startsWith('TH3')) {
     if (!silent) {
       errorBox.textContent = 'Enter a valid TH3 address.';
       panel.style.display = 'none';
