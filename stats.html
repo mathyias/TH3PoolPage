@@ -57,14 +57,24 @@
     </div>
 
     <div class="card">
-      <div class="stat-label">Miners</div>
+      <div class="stat-label">Active Miners</div>
       <div class="stat-value" id="minerCount">-</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total Miners</div>
+      <div class="stat-value" id="totalMinerCount">-</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Pool Hashrate</div>
+      <div class="stat-value" id="poolHashrate">-</div>
     </div>
   </section>
 
   <section class="grid">
     <div class="card">
-      <div class="stat-label">Blocks Found</div>
+      <div class="stat-label">Pool Blocks Found</div>
       <div class="stat-value" id="validBlocks">-</div>
     </div>
 
@@ -136,6 +146,15 @@ function th3(value){
   return `${Number(value || 0).toFixed(8)} TH3`;
 }
 
+function formatHashrate(value){
+  const rate = Number(value || 0);
+  if(rate >= 1e12) return `${(rate / 1e12).toFixed(2)} TH/s`;
+  if(rate >= 1e9) return `${(rate / 1e9).toFixed(2)} GH/s`;
+  if(rate >= 1e6) return `${(rate / 1e6).toFixed(2)} MH/s`;
+  if(rate >= 1e3) return `${(rate / 1e3).toFixed(2)} KH/s`;
+  return `${rate.toFixed(2)} H/s`;
+}
+
 function fmtDate(value){
   if(!value) return '-';
   return new Date(value).toLocaleString();
@@ -155,7 +174,9 @@ async function loadStats(){
     document.getElementById('poolStatus').textContent = data.online ? 'Online' : 'Offline';
     document.getElementById('validShares').textContent = data.validShares ?? 0;
     document.getElementById('invalidShares').textContent = data.invalidShares ?? 0;
-    document.getElementById('minerCount').textContent = data.minerCount ?? 0;
+    document.getElementById('minerCount').textContent = data.activeMinerCount ?? data.minerCount ?? 0;
+    document.getElementById('totalMinerCount').textContent = data.totalMinerCount ?? data.minerCount ?? 0;
+    document.getElementById('poolHashrate').textContent = formatHashrate(data.hashrate);
     document.getElementById('validBlocks').textContent = data.validBlocks ?? 0;
 
     document.getElementById('pendingGrossReward').textContent = th3(data.pendingGrossReward);

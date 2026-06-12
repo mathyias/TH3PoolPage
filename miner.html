@@ -81,7 +81,7 @@
       </div>
 
       <div class="card">
-        <div class="stat-label">Blocks Found</div>
+        <div class="stat-label">Pool Blocks Found</div>
         <div class="stat-value" id="minerBlocks">-</div>
       </div>
 
@@ -235,6 +235,7 @@ async function loadMiner(silent = false) {
     document.getElementById('minerValidShares').textContent = data.validShares ?? 0;
     document.getElementById('minerInvalidShares').textContent = data.invalidShares ?? 0;
     document.getElementById('minerBlocks').textContent = data.validBlocks ?? 0;
+    document.getElementById('minerHashrate').textContent = formatHashrate(data.hashrate);
     document.getElementById('minerLastSeen').textContent = fmtDate(data.lastSeen);
     document.getElementById('pendingReward').textContent = th3(data.pendingReward);
     document.getElementById('pendingSharePercent').textContent = percent(data.pendingSharePercent);
