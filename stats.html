@@ -3,44 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#020617">
-<title>Pool Stats | TH3 Pool</title>
-<link rel="stylesheet" href="/style.css?v=6">
+<meta name="theme-color" content="#05090c">
+<title>Pool Stats | TH3Chain</title>
+<link rel="stylesheet" href="/style.css?v=20260621-badgecenter">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta property="og:title" content="TH3 Pool">
+<meta property="og:title" content="Pool Stats">
 <meta property="og:image" content="https://pool.th3chain.cloud/assets/th3-logo.png?v=6">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="TH3 Pool">
+<meta name="twitter:title" content="Pool Stats">
 <meta name="twitter:image" content="https://pool.th3chain.cloud/assets/th3-logo.png?v=6">
-
 </head>
-
 <body>
-<div class="wrapper">
-  <nav>
-    <a class="pool-brand" href="https://th3chain.cloud" aria-label="TH3Chain home"><img src="/assets/th3-logo.png?v=6" alt="TH3"><span>Pool</span></a>
-    <button class="menu-toggle" type="button" aria-expanded="false">Menu</button>
-    <div class="nav-links">
-      <a class="btn" href="/">Overview</a>
-      <a class="btn" href="/start.html">Start Mining</a>
-      <a class="btn" href="/miner.html">Miner Panel</a>
-      <a class="btn btn-main" href="/stats.html">Pool Stats</a>
-      <a class="btn" href="https://wallet.th3chain.cloud">Wallet</a>
-      <a class="btn" href="https://explorer.th3chain.cloud">Explorer</a>
-    </div>
+<main class="phone">
+  <header class="topbar">
+    <a class="top-action" href="https://github.com/mathyias/TH3Coin" target="_blank" rel="noreferrer" aria-label="TH3 source">+</a>
+    <h1>TH3Chain</h1>
+    <img class="brand-mark" src="/assets/th3-logo.png" alt="TH3Chain">
+  </header>
+
+  <nav class="stories" aria-label="TH3 links">
+    <a class="story" href="https://wallet.th3chain.cloud">
+      <span class="story-ring"><img src="/assets/th3-logo.png" alt=""></span>
+      <strong>Wallet</strong>
+    </a>
+    <a class="story" href="https://explorer.th3chain.cloud">
+      <span class="story-ring">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.7 5.3-2.34 7.03a1.4 1.4 0 0 1-.9.9L6.43 17.57l2.34-7.03a1.4 1.4 0 0 1 .9-.9L16.7 7.3Zm-3.24 3.24-2.76.92-.92 2.76 2.76-.92.92-2.76Z"/>
+        </svg>
+      </span>
+      <strong>Explorer</strong>
+    </a>
+    <a class="story" href="https://chromewebstore.google.com/detail/th3-wallet/kngpfocihoddeicehgikkgjbpkfnpial" target="_blank" rel="noreferrer">
+      <span class="story-ring">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#fbbc05" d="M12 12 4.15 5.2A10 10 0 0 1 20.66 7H12Z"/>
+          <path fill="#ea4335" d="M12 12h8.66A10 10 0 0 0 4.15 5.2l3.52 6.1A5 5 0 0 1 12 12Z"/>
+          <path fill="#34a853" d="M12 12 8.48 18.1A10 10 0 0 0 20.66 7H13.6A5 5 0 0 1 12 17Z"/>
+          <path fill="#4285f4" d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/>
+          <path fill="#fff" d="M12 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+        </svg>
+      </span>
+      <strong>Chrome</strong>
+    </a>
+    <a class="story" href="https://coinranking.com/coin/jFx1j88Fo+th3chain-th3" target="_blank" rel="noreferrer">
+      <span class="story-ring">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="19" fill="#111827"/>
+          <path d="M31.9 14.5a13 13 0 1 0 0 19" fill="none" stroke="#00d084" stroke-width="6" stroke-linecap="round"/>
+          <path d="M23.5 17.5h8.5v8.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M32 17.5 21.2 28.3" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <strong>CoinRanking</strong>
+    </a>
+    <a class="story" href="https://www.livecoinwatch.com/price/TH3Chain-TH3" target="_blank" rel="noreferrer">
+      <span class="story-ring livecoinwatch-ring" aria-hidden="true">
+        <svg viewBox="0 0 48 48" focusable="false">
+          <circle cx="24" cy="24" r="19" fill="#111827"/>
+          <circle cx="24" cy="24" r="13" fill="none" stroke="#47d1d9" stroke-width="4"/>
+          <path d="M24 12v12l8 5" fill="none" stroke="#f8fbff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 32h5l4-7 4 4 7-11" fill="none" stroke="#efd89a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <strong>LiveCoinWatch</strong>
+    </a>
+    <a class="story" href="https://api.th3chain.cloud/" target="_blank" rel="noreferrer">
+      <span class="story-ring">API</span>
+      <strong>API</strong>
+    </a>
+    <a class="story" href="https://pool.th3chain.cloud">
+      <span class="story-ring">KP</span>
+      <strong>Mining</strong>
+    </a>
+    <a class="story" href="/whitepaper.html">
+      <span class="story-ring">WP</span>
+      <strong>Paper</strong>
+    </a>
   </nav>
 
-  <section class="hero">
-    <div class="kicker">POOL STATS</div>
-    <h1>Pool Status</h1>
-    <h2>Shares, Rewards, Payouts</h2>
-    <p>
-      Live pool-side statistics from TH3 mining infrastructure.
-    </p>
-  </section>
+  <section class="feed">
+    <div class="post-head">
+      <img class="avatar" src="/assets/th3-logo.png" alt="">
+      <div>
+        <strong>pool.th3chain.cloud</strong>
+        <span>live KAWPOW pool data</span>
+      </div>
+      <div class="dots">...</div>
+    </div>
 
-  <section class="grid">
+    <section class="hero">
+      <div class="hero-card hero-slider" aria-label="TH3 pool news">
+        <a class="hero-slide hero-slide-1 is-active" href="https://pool.th3chain.cloud">
+          <span class="badge">TH3 mining pool online</span>
+          <div>
+            <h2>Pool<br>Stats</h2>
+            <p>Watch active miners, blocks, hashrate, reward rules and recent pool shares.</p>
+          </div>
+        </a>
+        <a class="hero-slide hero-slide-2" href="https://coinranking.com/coin/jFx1j88Fo+th3chain-th3" target="_blank" rel="noreferrer">
+          <span class="badge">CoinRanking listing live</span>
+          <div>
+            <h2>TH3<br>Listed</h2>
+            <p>TH3Chain is visible on CoinRanking with public project data and live ecosystem links.</p>
+          </div>
+        </a>
+        <a class="hero-slide hero-slide-3" href="https://www.livecoinwatch.com/price/TH3Chain-TH3" target="_blank" rel="noreferrer">
+          <span class="badge">LiveCoinWatch listing live</span>
+          <div>
+            <h2>Live<br>Watch</h2>
+            <p>TH3Chain is now listed on LiveCoinWatch with supply, markets and explorer references.</p>
+          </div>
+        </a>
+        <div class="hero-dots" aria-label="News slides"><button class="is-active" type="button" aria-label="Pool news"></button><button type="button" aria-label="CoinRanking news"></button><button type="button" aria-label="LiveCoinWatch news"></button></div>
+      </div>
+    </section>
+
+    <div class="actions pool-tabs">
+      <a class="button primary" href="/start.html">Start Mining</a>
+      <a class="button" href="/stats.html">Pool Stats</a>
+      <a class="button" href="/miner.html">Miner Panel</a>
+    </div>
+
+    <section class="stack pool-content">
+<section class="grid">
     <div class="card">
       <div class="stat-label">Status</div>
       <div class="stat-value"><span class="badge" id="poolStatus">Loading</span></div>
@@ -128,17 +215,103 @@
       <div class="steps" id="recentPayouts"></div>
     </div>
   </section>
-
-
-  <section class="social-strip" aria-label="TH3Chain social links">
-    <a href="https://x.com/TH3ChainCloud" target="_blank" rel="noreferrer"><span>X</span>X / Twitter</a>
-    <a href="https://t.me/TH3ChainCloud" target="_blank" rel="noreferrer"><span>TG</span>Telegram</a>
-    <a href="mailto:contact@th3chain.cloud"><span>@</span>Contact</a>
+      <footer class="powered-footer">
+        <span>Powered by <strong>TH3Chain</strong></span>
+        <span>KAWPOW - Mining - Pool - Payouts</span>
+      </footer>
+    </section>
   </section>
 
-  <footer>TH3CHAIN | Pool Stats</footer>
-</div>
+  <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false">Menu</button>
+  <nav class="dock nav-links" id="navLinks" aria-label="Main navigation">
+    <a href="https://th3chain.cloud" aria-label="Home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 3 10.6l1.28 1.54L5.5 11.13V20h5.25v-5.5h2.5V20h5.25v-8.87l1.22 1.01L21 10.6 12 3.2Z"/></svg></a>
+    <a href="https://wallet.th3chain.cloud" aria-label="Wallet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15A2.5 2.5 0 0 1 22 7.5v9A2.5 2.5 0 0 1 19.5 19h-15A2.5 2.5 0 0 1 2 16.5v-9A2.5 2.5 0 0 1 4.5 5Zm0 2A.5.5 0 0 0 4 7.5v9a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5V10H6V8h14v-.5a.5.5 0 0 0-.5-.5h-15Zm11 6H18v2h-2.5v-2Z"/></svg></a>
+    <a href="https://explorer.th3chain.cloud" aria-label="Explorer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.7 5.3-2.34 7.03a1.4 1.4 0 0 1-.9.9L6.43 17.57l2.34-7.03a1.4 1.4 0 0 1 .9-.9L16.7 7.3Z"/></svg></a>
+    <a class="active" href="/" aria-label="Mining"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 11-14h-7l1-6Z"/></svg></a>
+    <a href="https://t.me/TH3ChainCloud" target="_blank" rel="noreferrer" aria-label="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.78 4.36 18.5 19.82c-.25 1.1-.9 1.36-1.82.85l-5.02-3.7-2.42 2.33c-.27.27-.5.5-1.03.5l.37-5.1 9.28-8.39c.4-.36-.09-.56-.62-.2L5.77 13.34.83 11.8c-1.07-.34-1.09-1.07.22-1.58L20.4 2.76c.9-.33 1.68.2 1.38 1.6Z"/></svg></a>
+  </nav>
 
+  <aside class="social-rail" aria-label="TH3 social links">
+    <a class="rail-link" href="https://th3chain.cloud" target="_blank" rel="noreferrer" aria-label="Main page">
+      <span class="rail-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M12 3.2 3 10.6l1.28 1.54L5.5 11.13V20h5.25v-5.5h2.5V20h5.25v-8.87l1.22 1.01L21 10.6 12 3.2Zm4.5 14.8h-1.25v-5.5h-6.5V18H7.5v-8.52L12 5.78l4.5 3.7V18Z"/>
+        </svg>
+      </span>
+      <span class="rail-label">Main Page</span>
+    </a>
+
+    <a class="rail-link" href="https://x.com/TH3ChainCloud" target="_blank" rel="noreferrer" aria-label="Twitter">
+      <span class="rail-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M17.53 3h3.02l-6.6 7.55L21.7 21h-6.08l-4.76-6.22L5.42 21H2.38l7.06-8.07L2 3h6.23l4.3 5.69L17.53 3Zm-1.06 16.16h1.67L7.32 4.74H5.53l10.94 14.42Z"/>
+        </svg>
+      </span>
+      <span class="rail-label">Twitter</span>
+    </a>
+
+    <a class="rail-link" href="https://chromewebstore.google.com/detail/th3-wallet/kngpfocihoddeicehgikkgjbpkfnpial" target="_blank" rel="noreferrer" aria-label="Chrome">
+      <span class="rail-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.33 2.5L4.3 3.66A9.96 9.96 0 0 1 12 2Zm0 20a10 10 0 0 1-8.66-15l4.33 7.5A5 5 0 0 0 12 17h6.74A9.98 9.98 0 0 1 12 22Zm8.66-13A10 10 0 0 1 20 18h-8a5 5 0 0 0 4.33-7.5L15.46 9h5.2ZM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z"/>
+        </svg>
+      </span>
+      <span class="rail-label">Chrome</span>
+    </a>
+
+    <a class="rail-link" href="https://t.me/TH3ChainCloud" target="_blank" rel="noreferrer" aria-label="Telegram">
+      <span class="rail-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M21.78 4.36 18.5 19.82c-.25 1.1-.9 1.36-1.82.85l-5.02-3.7-2.42 2.33c-.27.27-.5.5-1.03.5l.37-5.1 9.28-8.39c.4-.36-.09-.56-.62-.2L5.77 13.34.83 11.8c-1.07-.34-1.09-1.07.22-1.58L20.4 2.76c.9-.33 1.68.2 1.38 1.6Z"/>
+        </svg>
+      </span>
+      <span class="rail-label">Telegram</span>
+    </a>
+
+    <a class="rail-link" href="mailto:contact@th3chain.cloud" aria-label="Contact">
+      <span class="rail-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M4.5 5.5h15A2.5 2.5 0 0 1 22 8v8a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 16V8a2.5 2.5 0 0 1 2.5-2.5Zm0 2 7.5 5.05L19.5 7.5h-15Zm15 9A.5.5 0 0 0 20 16V9.28l-7.44 5.02a1 1 0 0 1-1.12 0L4 9.28V16a.5.5 0 0 0 .5.5h15Z"/>
+        </svg>
+      </span>
+      <span class="rail-label">Contact</span>
+    </a>
+  </aside>
+</main>
+
+<script>
+function initHeroNews(){
+  const sliders = document.querySelectorAll('.hero-slider');
+  sliders.forEach((slider) => {
+    const slides = Array.from(slider.querySelectorAll('.hero-slide'));
+    const dots = Array.from(slider.querySelectorAll('.hero-dots button'));
+    if(!slides.length || !dots.length) return;
+
+    let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
+    let timer;
+    const setActive = (next) => {
+      index = (next + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+      dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+    };
+    const start = () => {
+      clearInterval(timer);
+      timer = setInterval(() => setActive(index + 1), 5000);
+    };
+
+    dots.forEach((dot, i) => dot.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setActive(i);
+      start();
+    }));
+    setActive(index);
+    start();
+  });
+}
+
+initHeroNews();
+</script>
 <script>
 const POOL_API = 'https://pool.th3chain.cloud/api/pool/stats';
 
@@ -243,6 +416,5 @@ document.querySelectorAll('.menu-toggle').forEach((button) => {
   });
 });
 </script>
-
 </body>
 </html>
