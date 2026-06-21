@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#05090c">
 <title>Pool Stats | TH3Chain</title>
-<link rel="stylesheet" href="/style.css?v=20260621-badgecenter">
+<link rel="stylesheet" href="/style.css?v=20260621-statspolish">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:title" content="Pool Stats">
@@ -121,6 +121,7 @@
     </section>
 
     <div class="actions pool-tabs">
+      <a class="button pool-home-tab" href="/" aria-label="Pool home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 3 10.6l1.28 1.54L5.5 11.13V20h5.25v-5.5h2.5V20h5.25v-8.87l1.22 1.01L21 10.6 12 3.2Z"/></svg><span>Home</span></a>
       <a class="button primary" href="/start.html">Start Mining</a>
       <a class="button" href="/stats.html">Pool Stats</a>
       <a class="button" href="/miner.html">Miner Panel</a>
@@ -181,19 +182,19 @@
     </div>
   </section>
 
-  <section class="stack">
-    <div class="card">
+  <section class="stack stats-panels">
+    <div class="card stats-rules-card">
       <h3>Pool Rules</h3>
       <div class="steps">
         <div class="step">Algorithm: <span id="algorithm">-</span></div>
         <div class="step">Pool fee: <span id="poolFee">-</span></div>
         <div class="step">Minimum payout: <span id="minPayout">-</span></div>
         <div class="step">Reward per block: <span id="rewardPerBlock">-</span></div>
-        <div class="step">Confirmation buffer: <span id="confirmationBuffer">-</span> blocks</div>
+        <div class="step">Confirmation buffer: <span><span id="confirmationBuffer">-</span> blocks</span></div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card stats-rules-card">
       <h3>Payout State</h3>
       <div class="steps">
         <div class="step">Current height: <span id="currentHeight">-</span></div>
@@ -204,13 +205,13 @@
     </div>
   </section>
 
-  <section class="stack">
-    <div class="card">
+  <section class="stack stats-panels">
+    <div class="card stats-list-card">
       <h3>Recent Shares</h3>
       <div class="steps" id="recentShares"></div>
     </div>
 
-    <div class="card">
+    <div class="card stats-list-card">
       <h3>Recent Payouts</h3>
       <div class="steps" id="recentPayouts"></div>
     </div>
